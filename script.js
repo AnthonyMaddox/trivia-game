@@ -12,6 +12,10 @@ const answerButtonsElement = document.getElementById("answer-buttons");
 let shuffledQuestions, currentQuestionIndex;
 
 startButton.addEventListener("click", startGame);
+nextButton.addEventListener("click", () => {
+  currentQuestionIndex++;
+  setNextQuestion();
+});
 
 function startGame() {
   console.log("started");
@@ -40,6 +44,7 @@ function showQuestion(question) {
 }
 
 function resetState() {
+  clearStatusClass(document.body);
   nextButton.classList.add("hide");
   while (answerButtonsElement.firstChild) {
     answerButtonsElement.removeChild(answerButtonsElement.firstChild);
@@ -53,7 +58,12 @@ function selectAnswer(e) {
   Array.from(answerButtonsElement.children).forEach((button) => {
     setStatusClass(button, button.dataset.correct);
   });
-  nextButton.classList.remove("hide");
+  if (shuffledQuestions.length > currentQuestionIndex + 1) {
+    nextButton.classList.remove("hide");
+  } else {
+    startButton.innerText = "Restart";
+    startButton.classList.remove("hide");
+  }
 }
 
 function setStatusClass(element, correct) {
@@ -71,12 +81,31 @@ function clearStatusClass(element) {
 }
 const questions = [
   {
-    question: "what is 2 + 2",
+    question: "How many dorsal fins does a Pollock have?",
     answers: [
-      { text: 4, correct: true },
-      { text: 8, correct: false },
-      { text: 3, correct: false },
-      { text: 22, correct: false },
+      { text: 1, correct: false },
+      { text: 4, correct: false },
+      { text: 3, correct: true },
+      { text: 0, correct: false },
+    ],
+  },
+  {
+    question: "How many dorsal fins does a Pacific Cod have?",
+    answers: [
+      { text: 5, correct: false },
+      { text: 3, correct: true },
+      { text: 0, correct: false },
+      { text: 2, correct: false },
+    ],
+  },
+  {
+    question:
+      "What prominant feature can you find inside the mouth of a Rainbow Smelt?",
+    answers: [
+      { text: "fangs", correct: true },
+      { text: "no teeth", correct: false },
+      { text: "nothing", correct: false },
+      { text: "two rows of teeth", correct: false },
     ],
   },
 ];
